@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #4CAF50;
+        }
+        .tracker {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .tracker table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        .tracker th, .tracker td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .tracker th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .tracker tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .tracker tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #eef;
+            border-top: 1px solid #ccc;
+        }
+        .progress span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .add-expense {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .add-expense input {
+            padding: 10px;
+            margin: 5px;
+            width: calc(30% - 10px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .add-expense button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .add-expense button:hover {
+            background-color: #45a049;
+        }
+        @media (max-width: 600px) {
+            .add-expense input {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Monthly Expense Tracker</h1>
+    <div class="tracker">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="expense-table">
+                <!-- Dynamic rows will be added here -->
+            </tbody>
+        </table>
+        <div class="progress">
+            <span>Total Spent: Rs <span id="total-spent">0</span></span>
+            <span>Budget Remaining: Rs <span id="budget-remaining">30000</span></span>
+        </div>
+    </div>
+    <div class="add-expense">
+        <input type="date" id="date" />
+        <input type="text" id="description" placeholder="Description" />
+        <input type="number" id="amount" placeholder="Amount" />
+        <button onclick="addExpense()">Add Expense</button>
+    </div>
+
+    <script>
+        let budget = 30000;
+        let totalSpent = 0;
+
+        function addExpense() {
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (!date || !description || isNaN(amount)) {
+                alert('Please fill out all fields correctly.');
+                return;
+            }
+
+            // Add expense to table
+            const table = document.getElementById('expense-table');
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${date}</td><td>${description}</td><td>$${amount.toFixed(2)}</td>`;
+            table.appendChild(row);
+
+            // Update totals
+            totalSpent += amount;
+            document.getElementById('total-spent').textContent = totalSpent.toFixed(2);
+            document.getElementById('budget-remaining').textContent = (budget - totalSpent).toFixed(2);
+
+            // Clear inputs
+            document.getElementById('date').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('amount').value = '';
+        }
+    </script>
+</body>
+</html>
